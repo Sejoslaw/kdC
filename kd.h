@@ -1,7 +1,7 @@
 /*
 
     SIGNATURE:
-        v0.0.1 - KD Core Library
+        v0.0.2 - KD Core Library
 
     INFO:
         Author: Krzysztof "Sejoslaw" Dobrzyński
@@ -14,9 +14,6 @@
         'Public License'
         See at the end of the file for more info.
 
-    HISTORY:
-        0.0.1 - Initial version; +includes; +file constants;
-
 */
 
 #ifdef KD_IMPLEMENTATION
@@ -25,25 +22,74 @@
 extern "C" {
 #endif // __cplusplus
 
+/*
+    /////////////////////////////////////////////////////////////////
+    //                                                             //
+    //                                                             //
+    //                         Libraries                           //
+    //                                                             //
+    //                                                             //
+    /////////////////////////////////////////////////////////////////
+*/
+
 #ifndef KD_SKIP_STD
-#define KD_SKIP_STD
+    #define KD_SKIP_STD
 
-#include <assert.h>     // Contains the assert macro, used to assist with detecting logical errors and other types of bugs in debugging versions of a program.
-#include <complex.h>    // A set of functions for manipulating complex numbers.
-#include <ctype.h>      // Defines set of functions used to classify characters by their types or to convert between upper and lower case in a way that is independent of the used character set (typically ASCII or one of its extensions, although implementations utilizing EBCDIC are also known).
-#include <math.h>       // Defines common mathematical functions.
-#include <stdarg.h>     // For accessing a varying number of arguments passed to functions.
-#include <stddef.h>     // Defines several useful types and macros.
-#include <stdio.h>      // Defines core input and output functions.
-#include <stdlib.h>     // Defines numeric conversion functions, pseudo-random numbers generation functions, memory allocation, process control functions.
-#include <string.h>     // Defines string-handling functions.
-#include <time.h>       // Defines date- and time-handling functions.
-
+    #include <assert.h>     // Contains the assert macro, used to assist with detecting logical errors and other types of bugs in debugging versions of a program.
+    #include <complex.h>    // A set of functions for manipulating complex numbers.
+    #include <ctype.h>      // Defines set of functions used to classify characters by their types or to convert between upper and lower case in a way that is independent of the used character set (typically ASCII or one of its extensions, although implementations utilizing EBCDIC are also known).
+    #include <math.h>       // Defines common mathematical functions.
+    #include <stdarg.h>     // For accessing a varying number of arguments passed to functions.
+    #include <stddef.h>     // Defines several useful types and macros.
+    #include <stdio.h>      // Defines core input and output functions.
+    #include <stdlib.h>     // Defines numeric conversion functions, pseudo-random numbers generation functions, memory allocation, process control functions.
+    #include <string.h>     // Defines string-handling functions.
+    #include <time.h>       // Defines date- and time-handling functions.
 #endif // KD_SKIP_STD
+
+/*
+    /////////////////////////////////////////////////////////////////
+    //                                                             //
+    //                                                             //
+    //                      Global Constants                       //
+    //                                                             //
+    //                                                             //
+    /////////////////////////////////////////////////////////////////
+*/
+
+#ifndef NULL
+    #ifdef __cplusplus
+        #define NULL 0
+    #else
+        #define NULL ((void*)0)
+    #endif // __cplusplus
+#endif // NULL
 
 typedef unsigned char kd_bool;
 #define KD_TRUE 1
 #define KD_FALSE 0
+
+/*
+    /////////////////////////////////////////////////////////////////
+    //                                                             //
+    //                                                             //
+    //                            Color                            //
+    //                                                             //
+    //                                                             //
+    /////////////////////////////////////////////////////////////////
+*/
+
+#define KD_COLOR_RED       "\x1B[31m"
+#define KD_COLOR_GREEN     "\x1B[32m"
+#define KD_COLOR_YELLOW    "\x1B[33m"
+#define KD_COLOR_BLUE      "\x1B[34m"
+#define KD_COLOR_MAGENTA   "\x1B[35m"
+#define KD_COLOR_CYAN      "\x1B[36m"
+#define KD_COLOR_WHITE     "\x1B[37m"
+#define KD_COLOR_RESET     "\x1B[0m"
+
+#define KD_PRINT_COLOR_CHAR(text, KD_COLOR)    printf(KD_COLOR "%c" KD_COLOR_RESET, text);
+#define KD_PRINT_COLOR_TEXT(text, KD_COLOR)    printf(KD_COLOR "%s" KD_COLOR_RESET, text);
 
 /*
     /////////////////////////////////////////////////////////////////
