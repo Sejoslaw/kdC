@@ -1,7 +1,7 @@
 /*
 
     SIGNATURE:
-        v0.0.2 - KD Core Library
+        v0.0.3 - KD Core Library
 
     INFO:
         Author: Krzysztof "Sejoslaw" Dobrzyński
@@ -33,8 +33,6 @@ extern "C" {
 */
 
 #ifndef KD_SKIP_STD
-    #define KD_SKIP_STD
-
     #include <assert.h>     // Contains the assert macro, used to assist with detecting logical errors and other types of bugs in debugging versions of a program.
     #include <complex.h>    // A set of functions for manipulating complex numbers.
     #include <ctype.h>      // Defines set of functions used to classify characters by their types or to convert between upper and lower case in a way that is independent of the used character set (typically ASCII or one of its extensions, although implementations utilizing EBCDIC are also known).
@@ -113,6 +111,25 @@ typedef unsigned char kd_bool;
 #define KD_FILE_READ_WRITE_CREATE_BINARY            "w+b"
 #define KD_FILE_READ_WRITE_CREATE_APPEND            "a+"
 #define KD_FILE_READ_WRITE_CREATE_APPEND_BINARY     "a+b"
+
+/*
+    Opens file in KD_FILE_READ mode.
+*/
+FILE *kd_file_open_read(const char *path) {
+    FILE *file = fopen(path, KD_FILE_READ);
+    return file;
+}
+
+/*
+    Returns file size in bytes.
+*/
+long kd_file_size(FILE *file) {
+    long current_position = ftell(file);
+    fseek(file, 0L, SEEK_END);
+    long last_position = ftell(file);
+    fseek(file, current_position, SEEK_SET);
+    return last_position;
+}
 
 /*
     /////////////////////////////////////////////////////////////////
