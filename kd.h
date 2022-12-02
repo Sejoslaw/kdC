@@ -101,18 +101,18 @@ typedef unsigned char kd_bool;
     /////////////////////////////////////////////////////////////////
 */
 
-#define KD_FILE_READ "r"
-#define KD_FILE_READ_BINARY "rb"
-#define KD_FILE_WRITE "w"
-#define KD_FILE_WRITE_BINARY "wb"
-#define KD_FILE_APPEND "a"
-#define KD_FILE_APPEND_BINARY "ab"
-#define KD_FILE_READ_WRITE "r+"
-#define KD_FILE_READ_WRITE_BINARY "r+b"
-#define KD_FILE_READ_WRITE_CREATE "w+"
-#define KD_FILE_READ_WRITE_CREATE_BINARY "w+b"
-#define KD_FILE_READ_WRITE_CREATE_APPEND "a+"
-#define KD_FILE_READ_WRITE_CREATE_APPEND_BINARY "a+b"
+#define KD_FILE_READ                                "r"
+#define KD_FILE_READ_BINARY                         "rb"
+#define KD_FILE_WRITE                               "w"
+#define KD_FILE_WRITE_BINARY                        "wb"
+#define KD_FILE_APPEND                              "a"
+#define KD_FILE_APPEND_BINARY                       "ab"
+#define KD_FILE_READ_WRITE                          "r+"
+#define KD_FILE_READ_WRITE_BINARY                   "r+b"
+#define KD_FILE_READ_WRITE_CREATE                   "w+"
+#define KD_FILE_READ_WRITE_CREATE_BINARY            "w+b"
+#define KD_FILE_READ_WRITE_CREATE_APPEND            "a+"
+#define KD_FILE_READ_WRITE_CREATE_APPEND_BINARY     "a+b"
 
 /*
     /////////////////////////////////////////////////////////////////
