@@ -1,7 +1,7 @@
 /*
 
     SIGNATURE:
-        v0.0.3 - KD Core Library
+        v0.0.4 - KD Core Library
 
     INFO:
         Author: Krzysztof "Sejoslaw" Dobrzyński
@@ -129,6 +129,35 @@ long kd_file_size(FILE *file) {
     long last_position = ftell(file);
     fseek(file, current_position, SEEK_SET);
     return last_position;
+}
+
+/*
+    Reads file content and stores it in given buffer.
+*/
+void kd_file_read_text(FILE *file, char *buffer) {
+    int index = 0;
+    int ch;
+
+    while ((ch = fgetc(file)) != EOF) {
+        buffer[index] = ch;
+        index++;
+    }
+}
+
+/*
+    Reads a content of a file in a given path.
+*/
+char *kd_file_read_content(const char *path) {
+    FILE *file = kd_file_open_read(path);
+    long file_size = kd_file_size(file);
+
+    char *buf = (char *) malloc(sizeof(char) * file_size);
+    
+    kd_file_read_text(file, buf);
+
+    fclose(file);
+
+    return buf;
 }
 
 /*
