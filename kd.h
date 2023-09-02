@@ -1,7 +1,7 @@
 /*
 
     SIGNATURE:
-        v0.0.4 - KD Core Library
+        v0.0.5 - KD Core Library
 
     INFO:
         Author: Krzysztof "Sejoslaw" Dobrzyński
@@ -66,23 +66,62 @@ extern "C" {
     #include <uchar.h>          // Types and functions for manipulating Unicode characters
 #endif // KD_SKIP_C11
 
-/*
-    /////////////////////////////////////////////////////////////////
-    //                                                             //
-    //                                                             //
-    //                      Global Constants                       //
-    //                                                             //
-    //                                                             //
-    /////////////////////////////////////////////////////////////////
-*/
-
-#ifndef NULL
-    #ifdef __cplusplus
-        #define NULL 0
-    #else
-        #define NULL ((void*)0)
-    #endif // __cplusplus
-#endif // NULL
+#ifndef KD_SKIP_POSIX
+    #include <aio.h>            // Asynchronous input and output.
+    #include <arpa/inet.h>      // Functions for manipulating numeric IP addresses (part of Berkeley sockets).
+    #include <cpio.h>           // Magic numbers for the cpio archive format.
+    #include <dirent.h>         // Allows the opening and listing of directories.
+    #include <dlfcn.h>          // Dynamic linking.
+    #include <fcntl.h>          // File opening, locking and other operations.
+    #include <fmtmsg.h>         // Message display structures.
+    #include <fnmatch.h>        // Filename matching.
+    #include <ftw.h>            // File tree traversal.
+    #include <glob.h>           // Pathname "globbing" (pattern-matching).
+    #include <grp.h>            // User group information and control.
+    #include <iconv.h>          // Codeset conversion facility.
+    #include <langinfo.h>       // Language information constants – builds on C localization functions.
+    #include <libgen.h>         // Pathname manipulation.
+    #include <monetary.h>       // String formatting of monetary units.
+    #include <mqueue.h>         // Message queue.
+    #include <net/if.h>         // Listing of local network interfaces.
+    #include <netdb.h>          // Translating protocol and host names into numeric addresses (part of Berkeley sockets).
+    #include <netinet/in.h>     // Defines Internet protocol and address family (part of Berkeley sockets).
+    #include <netinet/tcp.h>    // Additional TCP control options (part of Berkeley sockets).
+    #include <nl_types.h>       // Localization message catalog functions.
+    #include <poll.h>           // Asynchronous file descriptor multiplexing.
+    #include <pthread.h>        // Defines an API for creating and manipulating POSIX threads.
+    #include <pwd.h>            // passwd (user information) access and control.
+    #include <regex.h>          // Regular expression matching.
+    #include <sched.h>          // Execution scheduling.
+    #include <search.h>         // Search tables.
+    #include <semaphore.h>      // POSIX semaphores.
+    #include <spawn.h>          // Process spawning.
+    #include <strings.h>        // Case-insensitive string comparisons.
+    #include <sys/ipc.h>        // Inter-process communication (IPC).
+    #include <sys/mman.h>       // Memory management, including POSIX shared memory and memory mapped files.
+    #include <sys/msg.h>        // POSIX message queues.
+    #include <sys/resource.h>   // Resource usage, priorities, and limiting.
+    #include <sys/select.h>     // Synchronous I/O multiplexing.
+    #include <sys/sem.h>        // XSI (SysV style) semaphores.
+    #include <sys/shm.h>        // XSI (SysV style) shared memory.
+    #include <sys/socket.h>     // Main Berkeley sockets header.
+    #include <sys/stat.h>       // File information (stat et al.).
+    #include <sys/statvfs.h>    // File System information.
+    #include <sys/time.h>       // Time and date functions and structures.
+    #include <sys/times.h>      // File access and modification times.
+    #include <sys/types.h>      // Various data types used elsewhere.
+    #include <sys/uio.h>        // Vectored I/O operations.
+    #include <sys/un.h>         // Unix domain sockets.
+    #include <sys/utsname.h>    // Operating system information, including uname.
+    #include <sys/wait.h>       // Status of terminated child processes.
+    #include <syslog.h>         // System error logging.
+    #include <tar.h>            // Magic numbers for the tar archive format.
+    #include <termios.h>        // Allows terminal I/O interfaces.
+    #include <unistd.h>         // Various essential POSIX functions and constants.
+    #include <utime.h>          // inode access and modification times.
+    #include <utmpx.h>          // User accounting database functions.
+    #include <wordexp.h>        // Word-expansion like the shell would perform.
+#endif // KD_SKIP_POSIX
 
 /*
     /////////////////////////////////////////////////////////////////
@@ -192,26 +231,6 @@ char *kd_file_read_content(const char *path) {
     //                                                             //
     //                                                             //
     //                            LINQ                             //
-    //                                                             //
-    //                                                             //
-    /////////////////////////////////////////////////////////////////
-*/
-
-/*
-    /////////////////////////////////////////////////////////////////
-    //                                                             //
-    //                                                             //
-    //                           Stream                            //
-    //                                                             //
-    //                                                             //
-    /////////////////////////////////////////////////////////////////
-*/
-
-/*
-    /////////////////////////////////////////////////////////////////
-    //                                                             //
-    //                                                             //
-    //                           String                            //
     //                                                             //
     //                                                             //
     /////////////////////////////////////////////////////////////////
