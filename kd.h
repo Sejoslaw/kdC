@@ -220,21 +220,131 @@ char *kd_file_read_content(const char *path) {
     /////////////////////////////////////////////////////////////////
     //                                                             //
     //                                                             //
-    //                         Collections                         //
+    //                     Collections + LINQ                      //
     //                                                             //
     //                                                             //
     /////////////////////////////////////////////////////////////////
 */
 
-/*
-    /////////////////////////////////////////////////////////////////
-    //                                                             //
-    //                                                             //
-    //                            LINQ                             //
-    //                                                             //
-    //                                                             //
-    /////////////////////////////////////////////////////////////////
-*/
+#define KD_LIST_ACTION void (*kd_list_action)(kd_list_t *, void *)
+#define KD_LIST_PREDICATE bool (*kd_list_predicate)(kd_list_t *, void *)
+#define KD_LIST_PREDICATE_WHILE bool (*kd_list_predicate_while)(kd_list_t *, void *, kd_list_index_t)
+#define KD_LIST_COMPARER int (*kd_list_comparer)(kd_list_t *, void *, void *)
+#define KD_LIST_EQUALITY_COMPARER bool (*kd_list_equals)(kd_list_t *, void *, void *)
+#define KD_LIST_FUNCTION void *(*kd_list_function)(kd_list_t *, void *)
+#define KD_LIST_FUNCTION_2 void *(*kd_list_function_2)(kd_list_t *, void *, void *)
+#define KD_LIST_SELECTOR void *(*kd_list_selector)(kd_list_t *, void *)
+#define KD_LIST_SELECTOR_SECOND void *(*kd_list_selector_second)(kd_list_t *, void *)
+#define KD_LIST_SELECTOR_2 void *(*kd_list_selector_2)(kd_list_t *, void *, void *)
+#define KD_LIST_SELECTOR_MANY kd_list_t *(*kd_list_selector_many)(kd_list_t *, void *)
+
+typedef long double kd_list_count_t;
+typedef long double kd_list_index_t;
+
+typedef struct kd_list_node_t {
+    void *data;
+    kd_list_node_t *next;
+} kd_list_node_t;
+
+typedef struct kd_list_t {
+    // Properties
+    kd_list_node_t *head;
+
+    // List Functions
+    void (*add)(kd_list_t *, void *); // list, data
+    void (*add_front)(kd_list_t *, void *); // list, data
+    void (*add_range)(kd_list_t *, kd_list_t *); // list, data
+    void (*add_range_raw)(kd_list_t *, void **, kd_list_count_t); // list, table, size
+    void (*clear)(kd_list_t *); // list
+    bool (*contains)(kd_list_t *, void *); // list, data
+    kd_list_index_t (*find_index)(kd_list_t *, KD_LIST_PREDICATE); // list, predicate
+    kd_list_index_t (*find_last_index)(kd_list_t *, KD_LIST_PREDICATE); // list, predicate
+    void (*for_each)(kd_list_t *, KD_LIST_ACTION); // list, action
+    void *(*get)(kd_list_t *, kd_list_index_t); // list, index
+    kd_list_t *(*get_range)(kd_list_t *, kd_list_index_t, kd_list_count_t); // list, index, count
+    kd_list_index_t (*index_of)(kd_list_t *, void *); // list, data
+    void (*insert)(kd_list_t *, kd_list_index_t, void *); // list, index, data
+    void (*insert_range)(kd_list_t *, kd_list_index_t, kd_list_t *); // list, index, data
+    kd_list_index_t (*last_index_of)(kd_list_t *, void *); // list, data
+    void (*remove)(kd_list_t *, void *); // list, data
+    void (*remove_all)(kd_list_t *, KD_LIST_PREDICATE); // list, predicate
+    void (*remove_at)(kd_list_t *, kd_list_index_t); // list, index
+    void (*remove_range)(kd_list_t *, kd_list_index_t, kd_list_count_t); // list, index, count
+    kd_list_t *(*reverse)(kd_list_t *); // list
+    kd_list_t *(*reverse_multiple)(kd_list_t *, kd_list_index_t, kd_list_count_t); // list, index, count
+    void (*set)(kd_list_t *, kd_list_index_t, void *); // list, index, data
+    void (*sort)(kd_list_t *, KD_LIST_COMPARER); // list, comparer
+    void **(*to_array)(kd_list_t *, kd_list_count_t *); // list, count_out
+
+    // LINQ Functions
+    void *(*aggregate)(kd_list_t *, KD_LIST_FUNCTION_2); // list, function
+    bool (*all)(kd_list_t *, KD_LIST_PREDICATE); // list, predicate
+    bool (*any)(kd_list_t *); // list
+    bool (*any_predicate)(kd_list_t *, KD_LIST_PREDICATE); // list, predicate
+    // TODO: as_parallel
+    void *(*average)(kd_list_t *, KD_LIST_SELECTOR); // list, selector
+    kd_list_t **(*chunk)(kd_list_t *, kd_list_count_t, kd_list_count_t); // list, size, count_out
+    kd_list_t *(*concat)(kd_list_t *, kd_list_t *); // list, second
+    bool (*contains_equals)(kd_list_t *, void *, KD_LIST_EQUALITY_COMPARER); // list, data, comparer
+    kd_list_count_t (*count)(kd_list_t *); // list
+    kd_list_count_t (*count_predicate)(kd_list_t *, KD_LIST_PREDICATE); // list, predicate
+    kd_list_t *(*distinct)(kd_list_t *, KD_LIST_EQUALITY_COMPARER); // list, comparer
+    kd_list_t *(*except)(kd_list_t *, kd_list_t *, KD_LIST_EQUALITY_COMPARER); // list, second, comparer
+    void *(*first)(kd_list_t *); // list
+    void *(*first_predicate)(kd_list_t *, KD_LIST_PREDICATE); // list, predicate
+    // TODO: group by
+    // TODO: group join
+    kd_list_t *(*intersect)(kd_list_t *, kd_list_t *, KD_LIST_EQUALITY_COMPARER); // list, second, comparer
+    kd_list_t *(*join)(kd_list_t *, kd_list_t *, KD_LIST_SELECTOR, KD_LIST_SELECTOR_SECOND, KD_LIST_SELECTOR_2); // list, second, list_key_selector, second_key_selector, result_selector
+    kd_list_t *(*join_equals)(kd_list_t *, kd_list_t *, KD_LIST_SELECTOR, KD_LIST_SELECTOR_SECOND, KD_LIST_SELECTOR_2, KD_LIST_EQUALITY_COMPARER); // list, second, list_key_selector, second_key_selector, result_selector, comparer
+    void *(*last)(kd_list_t *); // list
+    void *(*last_predicate)(kd_list_t *, KD_LIST_PREDICATE); // list, predicate
+    void *(*max)(kd_list_t *, KD_LIST_COMPARER); // list, comparer
+    void *(*min)(kd_list_t *, KD_LIST_COMPARER); // list, comparer
+    kd_list_t *(*order)(kd_list_t *, KD_LIST_COMPARER); // list, comparer
+    kd_list_t *(*order_descending)(kd_list_t *, KD_LIST_COMPARER); // list, comparer
+    kd_list_t *(*select)(kd_list_t *, KD_LIST_SELECTOR); // list, selector
+    kd_list_t *(*select_many)(kd_list_t *, KD_LIST_SELECTOR_MANY); // list, selector
+    bool (*sequence_equal)(kd_list_t *, KD_LIST_EQUALITY_COMPARER); // list, comparer
+    kd_list_t *(*skip)(kd_list_t *, kd_list_count_t); // list, count
+    kd_list_t *(*skip_last)(kd_list_t *, kd_list_count_t); // list, count
+    kd_list_t *(*skip_while)(kd_list_t *, KD_LIST_PREDICATE_WHILE); // list, predicate
+    void *(*sum)(kd_list_t *, KD_LIST_SELECTOR); // list, selector
+    kd_list_t *(*take)(kd_list_t *, kd_list_count_t); // list, count
+    kd_list_t *(*take_last)(kd_list_t *, kd_list_count_t); // list, count
+    kd_list_t *(*take_while)(kd_list_t *, KD_LIST_PREDICATE_WHILE); // list, predicate
+    kd_list_t *(*union_list)(kd_list_t *, kd_list_t *, KD_LIST_EQUALITY_COMPARER); // list, second, comparer
+    kd_list_t *(*where)(kd_list_t *, KD_LIST_PREDICATE); // list, predicate
+    kd_list_t *(*zip)(kd_list_t *, kd_list_t *, KD_LIST_SELECTOR_2); // list, second, selector
+} kd_list_t;
+
+// --== Method Signatures ==--
+
+// --== End Method Signatures ==--
+
+kd_list_node_t *kd_list_node_create(void *data) {
+    kd_list_node_t *node = (kd_list_node_t *) malloc(sizeof(kd_list_node_t));
+
+    node->data = data;
+    node->next = NULL;
+
+    return node;
+}
+
+kd_list_t *kd_list_create() {
+    kd_list_t *list = (kd_list_t *) malloc(sizeof(kd_list_t));
+
+    // Properties
+    list->head = NULL;
+
+    // List Functions
+    // list->add = kd_list_add;
+
+    // LINQ Functions
+    // list->aggregate = kd_list_aggregate;
+
+    return list;
+}
 
 #ifdef __cplusplus
 }
